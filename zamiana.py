@@ -1,5 +1,3 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog, QLabel
-import sys
 import argparse
 import json
 import yaml
@@ -14,7 +12,7 @@ def parse_arguments():
 
 #if __name__ == "__main__":
 #	input_file, output_file = parse_arguments()
-	
+
 
 def load_json(file_path):
 	try:
@@ -76,58 +74,8 @@ def load_xml(file_path):
 
 def save_xml(data, file_path):
 	try:
-		tree=ET.ElementTree(data)
+		tree = ET.ElementTree(data)
 		tree.write(file_path, encoding='utf-8', xml_declaration=True)
 		print("Dane zostały zapisane do pliku XML.")
 	except Exception as e:
 		print(f"Nieoczekiwany błąd podaczas zapisu do pliku XML: {e}")
-
-class ConverterApp(QMainWindow):
-	def __init__(self):
-		super().__init__()
-		self.initUI()
-
-	def initUI(self):
-		self.setGeometry(250, 300, 400, 200)
-		self.setWindowTitle('Konwerter danych')
-
-		self.label = QLabel('Wybierz plik wejściowy:', self)
-		self.label.move(20, 20)
-
-		self.input_button = QPushButton('Wybierz plik', self)
-		self.input_button.move(20, 50)
-		self.input_button.clicked.connect(self.open_input_file)
-
-		self.output_button = QPushButton('Wybierz ścieżkę zapisu', self)
-		self.output_button.move(20, 100)
-		self.output_button.clicked.connect(self.open_output_file)
-
-		self.convert_button = QPushButton('Konwertuj', self)
-		self.convert_button.move(20, 150)
-		self.convert_button.clicked.connect(self.convert_file)
-
-		self.input_file_path = ''
-		self.output_file_path = ''
-
-	def open_input_file(self):
-		options = QFileDialog.Options()
-		file, _ = QFileDialog.getOpenFileName(self, 'Wybierz plik wejściowy', '', 'Wszystkie pliki (*);;Pliki JSON (*.json);;Pliki YAML (*.yaml *.yml);;Pliki XML (*.xml)', options=options)
-		if file:
-			self.input_file_path = file
-
-	def open_output_file(self):
-		options = QFileDialog.Options()
-		file, _ = QFileDialog.getSaveFileName(self, 'Wybierz ścieżkę zapisu', '', 'Pliki JSON (*.json);;Pliki YAML (*.yaml *.yml);;Pliki XML (*.xml)', options=options)
-		if file:
-			self.output_file_path = file
-
-	def convert_file(self):
-		if self.input_file_path and self.output_file_path:
-			pass
-
-if __name__ == '__main__':
-	app = QApplication(sys.argv)
-	ex = ConverterApp()
-	ex.show()
-	sys.exit(app.exec_())
-
