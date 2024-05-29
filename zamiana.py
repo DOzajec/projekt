@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog, QLabel
+from PyQt5.QtCore import QThread, pyqtSignal
 import sys
 import argparse
 import json
@@ -81,6 +82,40 @@ def save_xml(data, file_path):
 		print("Dane zostały zapisane do pliku XML.")
 	except Exception as e:
 		print(f"Nieoczekiwany błąd podaczas zapisu do pliku XML: {e}")
+
+class FileLoader(QThread):
+	finished = pyqtSignal(object)
+
+	def __init__(self, file_path, file_type):
+		super().__init__()
+		self.file_path = file_path
+		self.file_type = file_type
+
+	def run(self):
+		if self.file_type == 'json':
+			data = load_json(self.file_path)
+		elif self.file_type == 'yaml':
+			data = load_yaml(self.file_path)
+		elif self.file_type == 'xml':
+			data = load_xml(self.file_path)
+		else:
+			data = None
+		self.finished.emit(data)
+
+class FileSaver(QThread):
+	def __init__(self, data, file_path, file_type):
+		super().__init__()
+		self.data = data
+		self.file_path = file_path
+		self.file_type = file_type
+
+	def run(self): 
+		if self.file_type == 'json':
+			save_json(self.data, self.file_path)
+		elif self.file_type == 'yaml':
+			save_yaml(self.data, self.file_path)
+		elif self.file_type == 'xml':
+			save_xml(self.data, self.file_path)
 
 class ConverterApp(QMainWindow):
 	def __init__(self):
