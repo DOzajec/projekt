@@ -50,3 +50,11 @@ def load_yaml(file_path):
     except Exception as e:
         print(f"Nieoczekiwany błąd: {e}")
         return None
+
+def save_yaml(data, file_path):
+    try:
+        with open(file_path, 'w', encoding='utf-8') as file:
+            yaml.safe_dump(data, file, default_flow_style=False, allow_unicode=True)
+        print("Dane zostały zapisane do pliku YAML.")
+    except Exception as e:
+        print(f"Nieoczekiwany błąd podczas zapisu do pliku YAML: {e}")
