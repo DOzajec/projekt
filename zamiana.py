@@ -1,6 +1,7 @@
 import sys
 import argparse
 import json
+import yaml
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Konwersja danych między formatami .xml, .json i .yml.")
@@ -35,3 +36,17 @@ def save_json(data, file_path):
         print("Dane zostały zapisane do pliku JSON.")
     except Exception as e:
         print(f"Nieoczekiwany błąd podczas zapisu do pliku JSON: {e}")
+
+def load_yaml(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = yaml.safe_load(file)
+        print("Plik YAML został poprawnie wczytany.")
+        return data
+    except yaml.YAMLError as e:
+        print(f"Błąd składni YAML: {e}")
+    except FileNotFoundError:
+        print(f"Plik {file_path} nie został znaleziony.")
+    except Exception as e:
+        print(f"Nieoczekiwany błąd: {e}")
+        return None
