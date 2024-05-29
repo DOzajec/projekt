@@ -27,3 +27,11 @@ def load_json(file_path):
     except Exception as e:
         print(f"Nieoczekiwany błąd: {e}")
         return None
+
+def save_json(data, file_path):
+    try:
+        with open(file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+        print("Dane zostały zapisane do pliku JSON.")
+    except Exception as e:
+        print(f"Nieoczekiwany błąd podczas zapisu do pliku JSON: {e}")
