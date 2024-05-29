@@ -5,16 +5,16 @@ import yaml
 import xml.etree.ElementTree as ET
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Konwersja danych między formatami .xml, .json i .yml.")
-    parser.add_argument('input_file', type=str)
-    parser.add_argument('output_file', type=str)
-    args = parser.parse_args()
-    return args.input_file, args.output_file
+	parser = argparse.ArgumentParser(description="Konwersja danych między formatami .xml, .json i .yml.")
+	parser.add_argument('input_file', type=str)
+	parser.add_argument('output_file', type=str)
+	args = parser.parse_args()
+	return args.input_file, args.output_file
 
 if __name__ == "__main__":
-    input_file, output_file = parse_arguments()
-    print(f"Plik wejściowy: {input_file}")
-    print(f"Plik wyjściowy: {output_file}")
+	input_file, output_file = parse_arguments()
+	print(f"Plik wejściowy: {input_file}")
+	print(f"Plik wyjściowy: {output_file}")
 
 def load_json(file_path):
 	try:
@@ -73,3 +73,11 @@ def load_xml(file_path):
 	except Exception as e:
 		print(f"Nieoczekiwany błąd: {e}")
 		return None
+
+def save_xml(data, file_path):
+	try:
+		tree=ET.ElementTree(data)
+		tree.write(file_path, encoding='utf-8', xml_declaration=True)
+		print("Dane zostały zapisane do pliku XML.")
+	except Exception as e:
+		print(f"Nieoczekiwany błąd podaczas zapisu do pliku XML: {e}")
